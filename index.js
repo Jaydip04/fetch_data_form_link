@@ -65,9 +65,10 @@ app.get("/api/fetchData/", (req, res) => {
       };
     } else if (siteName.includes("")) {
       responseData = {
-        message: "This video is from other",
-        title: meta.title || "No title found",
-        videoUrl: meta.url || "No video URL found",
+        message: meta
+        // "This video is from other",
+        // title: meta.title || "No title found",
+        // videoUrl: meta.url || "No video URL found",
       };
     } else {
       return res.status(400).json({
