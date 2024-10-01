@@ -32,7 +32,7 @@ app.get('/api/fetchData/', (req, res) => {
     if (siteName.includes('YouTube')) {
       responseData = {
         message: 'YouTube video detected',
-        videoUrl: meta.video.url || 'No video URL found',
+        videoUrl: meta.url || 'No video URL found',
       };
     } else if (siteName.includes('Instagram')) {
       responseData = {
