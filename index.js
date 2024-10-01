@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 dotenv.config();
 
 app.get("/", (req, res) => {
-  res.send("THis is update api");
+    res.send("This is fetchData Api form link");
 });
 
 app.get("/api/fetchData/", (req, res) => {
@@ -35,27 +35,35 @@ app.get("/api/fetchData/", (req, res) => {
     let responseData = {};
 
     // Determine the site and prepare the response data accordingly
-    if (siteName.includes("YouTube")) {
-      responseData = {
-        message: "This video is from YouTube",
-        title: meta.title || "No title found",
-        videoUrl: meta.video.url || "No video URL found",
-      };
-    } else if (siteName.includes("Instagram")) {
+    if (
+        siteName.includes("YouTube") ||
+        url.includes("youtube.com") ||
+        url.includes("youtu.be")
+      ) {
+        responseData = {
+          message:meta
+        //    "This video is from YouTube",
+        //   title: meta.title || "No title found",
+        //   videoUrl: meta.video.url || "No video URL found",
+        };
+      }  else if (
+        siteName.includes("Instagram") ||
+        url.includes("instagram.com")
+      ) {
       responseData = {
         message: "This video is from Instagram",
         title: meta.title || "No title found",
         videoUrl: meta.url || "No video URL found",
         // likes: meta.site_name || "Likes information not available",
       };
-    } else if (siteName.includes("Facebook")) {
+    } else if (siteName.includes("Facebook") || url.includes("facebook.com")) {
       responseData = {
         message: "This video is from Facebook",
         title: meta.title || "No title found",
         videoUrl: meta.video.url || "No video URL found",
         // likes: meta.likes || "Likes information not available",
       };
-    } else if (siteName.includes("TikTok")) {
+    } else if (siteName.includes("TikTok") || url.includes("tiktok.com")) {
       responseData = {
         message: "This video is from TikTok",
         title: meta.title || "No title found",
