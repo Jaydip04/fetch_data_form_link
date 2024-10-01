@@ -30,20 +30,17 @@ app.get('/api/fetchData/', (req, res) => {
     let responseData = {};
 
     if (siteName.includes('YouTube')) {
-      responseData = {
-        message: 'YouTube video detected',
-        videoUrl: meta.url || 'No video URL found',
-      };
+        responseData = {
+            meta : meta
+           };
     } else if (siteName.includes('Instagram')) {
-      responseData = {
-        message: 'Instagram post detected',
-        originalUrl: meta.url,
-      };
+        responseData = {
+            meta : meta
+           };
     } else if(siteName.includes('Facebook')){
-      responseData = {
-        message: 'Facebook post detected',
-        originalUrl: meta.url,
-      };
+        responseData = {
+            meta : meta
+           };
     }else {
       return res.status(400).json({ error: 'The provided URL is not from YouTube or Instagram.' });
     }
