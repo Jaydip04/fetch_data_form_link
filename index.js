@@ -35,7 +35,7 @@ app.get("/api/fetchData/", (req, res) => {
     let responseData = {};
 
     // Determine the site and prepare the response data accordingly
-    if (title.includes("YouTube")) {
+    if (meta.title.includes("YouTube")) {
       responseData = {
         message: "This video is from YouTube",
         title: meta.title || "No title found",
