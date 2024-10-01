@@ -64,7 +64,15 @@ app.get("/fetchData", (req, res) => {
         videoUrl: meta.video.url || "No video URL found",
         // likes: meta.likes || "Likes information not available",
       };
-    } else if (siteName.includes("")) {
+    }else if (siteName.includes("Snapchat")) {
+        responseData = {
+          message: "This video is from Snapchat",
+          title: meta.title || "No title found",
+          videoUrl: meta.url || "No video URL found",
+          // likes: meta.likes || "Likes information not available",
+        };
+      }
+     else if (siteName.includes("")) {
       responseData = {
         message: "This video is from Other",
         title: meta.title || "No title found",
