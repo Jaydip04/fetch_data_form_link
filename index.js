@@ -1,64 +1,62 @@
 import dotenv from "dotenv";
 import express from "express";
-import og from "open-graph";
-
-dotenv.config();
+import og from 'open-graph'; // Import the open-graph package
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-const port = process.env.PORT || 3000;
-
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
-app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send("This api use the fetch Data from link");
-});
-
-app.get("/api/fetchData", (req, res) => {
+// API endpoint to fetch Open Graph metadata
+app.get('/api/fetchData', (req, res) => {
   const url = req.query.url;
 
-  if (!url || typeof url !== "string") {
-    return res.status(400).json({ error: "A valid URL is required" });
+  // Validate URL input
+  if (!url || typeof url !== 'string') {
+    return res.status(400).json({ error: 'A valid URL is required' });
   }
 
+  // Use the open-graph package to fetch metadata
   og(url, (err, meta) => {
     if (err) {
-      console.error("Error fetching Open Graph data:", err);
-      return res.status(500).json({ error: "Failed to fetch Open Graph data" });
+      console.error('Error fetching Open Graph data:', err);
+      return res.status(500).json({ error: 'Failed to fetch Open Graph data' });
     }
 
+    // Check if metadata was retrieved
     if (!meta) {
-      return res.status(404).json({ error: "No metadata found for this URL" });
+      return res.status(404).json({ error: 'No metadata found for this URL' });
     }
 
-    const siteName = meta.site_name || ""; // Extract the site name from metadata
+    // Determine if the site is YouTube or Instagram
+    const siteName = meta.site_name || ''; // Extract the site name from metadata
     let responseData = {};
 
-    if (siteName.includes("YouTube")) {
+    if (siteName.includes('YouTube')) {
+      // If the site is YouTube, extract the video URL
       responseData = {
-        message: "YouTube video detected",
-        videoUrl: meta.video.url || "No video URL found",
+        message: 'YouTube video detected',
+        videoUrl: meta.video.url || 'No video URL found',
       };
-    } else if (siteName.includes("Instagram")) {
+    } else if (siteName.includes('Instagram')) {
+      // If the site is Instagram, return the original URL
       responseData = {
-        message: "Instagram post detected",
+        message: 'Instagram post detected',
+        originalUrl: meta.url,
+      };
+    } else if(siteName.includes('Facebook')){
+      responseData = {
+        message: 'Facebook post detected',
         originalUrl: meta.url,
       };
     }else {
-      return res
-        .status(400)
-        .json({ error: "The provided URL is not from YouTube or Instagram." });
+      return res.status(400).json({ error: 'The provided URL is not from YouTube or Instagram.' });
     }
 
+    // Return the response data
     res.json(responseData);
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
