@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 dotenv.config();
 
 app.get("/", (req, res) => {
-  res.send("This is fetchData Api form link add 1");
+  res.send("This is fetchData Api form link add");
 });
 
 app.get("/api/fetchData/", (req, res) => {
@@ -35,7 +35,7 @@ app.get("/api/fetchData/", (req, res) => {
     let responseData = {};
 
     // Determine the site and prepare the response data accordingly
-    if (meta.title == "YouTube") {
+    if (siteName.includes("YouTube")) {
       responseData = {
         message: "This video is from YouTube",
         title: meta.title || "No title found",
