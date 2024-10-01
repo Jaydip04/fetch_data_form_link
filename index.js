@@ -2,10 +2,13 @@ import dotenv from "dotenv";
 import express from "express";
 import og from "open-graph";
 
+dotenv.config();
+
 const app = express();
+
 const PORT = process.env.PORT || 3000;
 
-dotenv.config();
+
 
 app.get("/", (req, res) => {
     res.send("This is fetchData Api form link");
