@@ -20,7 +20,7 @@ app.get("/api/fetchData/", (req, res) => {
   }
 
   // Use the open-graph package to fetch metadata
-  og(url, (err, meta) => {
+  og(url, function (err, meta) {
     if (err) {
       console.error("Error fetching Open Graph data:", err);
       return res.status(500).json({ error: "Failed to fetch Open Graph data" });
