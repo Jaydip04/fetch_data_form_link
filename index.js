@@ -9,7 +9,7 @@ app.get('/',(req,res)=>{
     res.send("This is fetchData Api")
 })
 
-app.get('/api/fetchData', (req, res) => {
+app.get('/api/fetchData/', (req, res) => {
   const url = req.query.url;
 
   if (!url || typeof url !== 'string') {
