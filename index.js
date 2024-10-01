@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import express from "express";
 import og from "open-graph";
+import axios from 'axios';
+import * as cheerio from 'cheerio';
 
 dotenv.config();
 
@@ -12,13 +14,35 @@ app.get("/", (req, res) => {
   res.send("This is fetchData Api form link change the path");
 });
 
-app.get("/fetchData", (req, res) => {
+async function fetchOpenGraphData(url) {
+    try {
+        const { data } = await axios.get(url);
+        const $ = cheerio.load(data);
+        const ogData = {};
+
+        $('meta').each((i, element) => {
+            const property = $(element).attr('property');
+            const content = $(element).attr('content');
+            if (property && property.startsWith('og:')) {
+                ogData[property] = content || '';
+            }
+        });
+
+        return ogData;
+    } catch (error) {
+        console.error('Error fetching Open Graph data:', error.message);
+        return null;
+    }
+}
+
+app.get("/fetchData",async  (req, res) => {
   const url = req.query.url;
 
   // Validate URL input
   if (!url || typeof url !== "string") {
     return res.status(400).json({ error: "A valid URL is required" });
   }
+  const ogData = await fetchOpenGraphData(url);
 
   // Use the open-graph package to fetch metadata
   og(url, function (err, meta) {
@@ -35,13 +59,12 @@ app.get("/fetchData", (req, res) => {
     const siteName = meta.site_name || "";
     let responseData = {};
 
-    // Determine the site and prepare the response data accordingly
     if (siteName.includes("YouTube")) {
       responseData = {
-        message: meta,
-        //    "This video is from YouTube",
-        //   title: meta.title || "No title found",
-        //   videoUrl: meta.video.url || "No video URL found",
+        message: 
+           "This video is from YouTube",
+          title: meta.title || "No title found",
+          videoUrl: meta.video.url || "No video URL found",
       };
     } else if (siteName.includes("Instagram")) {
       responseData = {
@@ -86,7 +109,8 @@ app.get("/fetchData", (req, res) => {
     }
 
     // Return the response data
-    res.json(responseData);
+    res.json(responseData+ogData);
+
   });
 });
 
