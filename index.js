@@ -38,11 +38,13 @@ async function fetchOpenGraphData(url) {
 app.get("/fetchData",async  (req, res) => {
   const url = req.query.url;
 
+  const ogData = await fetchOpenGraphData(url);
+  console.log(ogData);
   // Validate URL input
   if (!url || typeof url !== "string") {
     return res.status(400).json({ error: "A valid URL is required" });
   }
-  const ogData = await fetchOpenGraphData(url);
+  
 
   // Use the open-graph package to fetch metadata
   og(url, function (err, meta) {
