@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 dotenv.config();
 
 app.get("/", (req, res) => {
-    res.send("This is fetchData Api form link add");
+    res.send("This is fetchData Api form link");
 });
 
 app.get("/api/fetchData/", (req, res) => {
@@ -43,7 +43,7 @@ app.get("/api/fetchData/", (req, res) => {
         responseData = {
           message: "This video is from YouTube",
           title: meta.title || "No title found",
-          videoUrl: (meta.video && meta.video.url) || "No video URL found",
+          videoUrl: meta.video.url || "No video URL found",
         };
       }  else if (
         siteName.includes("Instagram") ||
@@ -71,10 +71,9 @@ app.get("/api/fetchData/", (req, res) => {
       };
     } else if (siteName.includes("")) {
       responseData = {
-        message: meta,
-        // "This video is from other",
-        // title: meta.title || "No title found",
-        // videoUrl: meta.url || "No video URL found",
+        message: "This video is from other",
+        title: meta.title || "No title found",
+        videoUrl: meta.url || "No video URL found",
       };
     } else {
       return res.status(400).json({
