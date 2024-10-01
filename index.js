@@ -109,7 +109,7 @@ app.get("/fetchData",async  (req, res) => {
     }
 
     // Return the response data
-    res.json(responseData+ogData);
+    res.json(ogData);
 
   });
 });
