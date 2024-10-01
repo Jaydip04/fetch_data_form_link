@@ -8,13 +8,11 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-
-
 app.get("/", (req, res) => {
-    res.send("This is fetchData Api form link");
+  res.send("This is fetchData Api form link change the path");
 });
 
-app.get("/api/fetchData/", (req, res) => {
+app.get("/fetchData", (req, res) => {
   const url = req.query.url;
 
   // Validate URL input
@@ -38,18 +36,14 @@ app.get("/api/fetchData/", (req, res) => {
     let responseData = {};
 
     // Determine the site and prepare the response data accordingly
-    if (
-        siteName.includes("YouTube")
-      ) {
-        responseData = {
-          message:meta
+    if (siteName.includes("YouTube")) {
+      responseData = {
+        message: meta,
         //    "This video is from YouTube",
         //   title: meta.title || "No title found",
         //   videoUrl: meta.video.url || "No video URL found",
-        };
-      }  else if (
-        siteName.includes("Instagram") 
-      ) {
+      };
+    } else if (siteName.includes("Instagram")) {
       responseData = {
         message: "This video is from Instagram",
         title: meta.title || "No title found",
@@ -71,12 +65,12 @@ app.get("/api/fetchData/", (req, res) => {
         // likes: meta.likes || "Likes information not available",
       };
     } else if (siteName.includes("")) {
-        responseData = {
-          message: "This video is from Other",
-          title: meta.title || "No title found",
-          videoUrl: (meta.video && meta.video.url) || "No video URL found",
-        };
-      }else {
+      responseData = {
+        message: "This video is from Other",
+        title: meta.title || "No title found",
+        videoUrl: (meta.video && meta.video.url) || "No video URL found",
+      };
+    } else {
       return res.status(400).json({
         error:
           "The provided URL is not from a supported site (YouTube, Instagram, Facebook, TikTok).",
