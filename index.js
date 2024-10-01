@@ -8,13 +8,7 @@ const PORT = process.env.PORT || 3000;
 dotenv.config();
 
 app.get("/", (req, res) => {
-  const url = req.query.url;
-  res.send(url)
-  og(url, function (err, meta) {
-    console.log(meta);
-  });
-  //   res.send("This is fetchData Api form link add");
-  res.send(meta);
+    res.send("This is fetchData Api form link add");
 });
 
 app.get("/api/fetchData/", (req, res) => {
