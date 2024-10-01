@@ -5,7 +5,10 @@ import og from 'open-graph'; // Import the open-graph package
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// API endpoint to fetch Open Graph metadata
+app.get('/',(req,res)=>{
+    res.send("This is fetchData Api")
+})
+
 app.get('/api/fetchData', (req, res) => {
   const url = req.query.url;
 
