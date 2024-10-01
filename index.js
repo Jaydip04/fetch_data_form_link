@@ -68,7 +68,7 @@ app.get("/fetchData", (req, res) => {
       responseData = {
         message: "This video is from Other",
         title: meta.title || "No title found",
-        videoUrl: (meta.video && meta.video.url) || "No video URL found",
+        videoUrl: meta.url || "No video URL found",
       };
     } else {
       return res.status(400).json({
