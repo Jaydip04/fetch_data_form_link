@@ -36,9 +36,7 @@ app.get("/api/fetchData/", (req, res) => {
 
     // Determine the site and prepare the response data accordingly
     if (
-        siteName.includes("YouTube") ||
-        url.includes("youtube.com") ||
-        url.includes("youtu.be")
+        siteName.includes("YouTube")
       ) {
         responseData = {
           message:meta
@@ -47,8 +45,7 @@ app.get("/api/fetchData/", (req, res) => {
         //   videoUrl: meta.video.url || "No video URL found",
         };
       }  else if (
-        siteName.includes("Instagram") ||
-        url.includes("instagram.com")
+        siteName.includes("Instagram") 
       ) {
       responseData = {
         message: "This video is from Instagram",
@@ -56,14 +53,14 @@ app.get("/api/fetchData/", (req, res) => {
         videoUrl: meta.url || "No video URL found",
         // likes: meta.site_name || "Likes information not available",
       };
-    } else if (siteName.includes("Facebook") || url.includes("facebook.com")) {
+    } else if (siteName.includes("Facebook")) {
       responseData = {
         message: "This video is from Facebook",
         title: meta.title || "No title found",
         videoUrl: meta.video.url || "No video URL found",
         // likes: meta.likes || "Likes information not available",
       };
-    } else if (siteName.includes("TikTok") || url.includes("tiktok.com")) {
+    } else if (siteName.includes("TikTok")) {
       responseData = {
         message: "This video is from TikTok",
         title: meta.title || "No title found",
@@ -71,12 +68,12 @@ app.get("/api/fetchData/", (req, res) => {
         // likes: meta.likes || "Likes information not available",
       };
     } else if (siteName.includes("")) {
-      responseData = {
-        message: "This video is from other",
-        title: meta.title || "No title found",
-        videoUrl: meta.url || "No video URL found",
-      };
-    } else {
+        responseData = {
+          message: "This video is from Other",
+          title: meta.title || "No title found",
+          videoUrl: (meta.video && meta.video.url) || "No video URL found",
+        };
+      }else {
       return res.status(400).json({
         error:
           "The provided URL is not from a supported site (YouTube, Instagram, Facebook, TikTok).",
