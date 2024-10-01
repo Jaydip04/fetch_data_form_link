@@ -8,11 +8,12 @@ const PORT = process.env.PORT || 3000;
 dotenv.config();
 
 app.get("/", (req, res) => {
-    const url = req.query.url;
-    og(url, function (err, meta) {
-        console.log(meta);
-      });
-  res.send("This is fetchData Api form link add");
+  const url = req.query.url;
+  res.send(url)
+  og(url, function (err, meta) {
+    console.log(meta);
+  });
+  //   res.send("This is fetchData Api form link add");
   res.send(meta);
 });
 
@@ -26,7 +27,6 @@ app.get("/api/fetchData/", (req, res) => {
 
   // Use the open-graph package to fetch metadata
   og(url, function (err, meta) {
-
     if (err) {
       console.error("Error fetching Open Graph data:", err);
       return res.status(500).json({ error: "Failed to fetch Open Graph data" });
@@ -71,7 +71,7 @@ app.get("/api/fetchData/", (req, res) => {
       };
     } else if (siteName.includes("")) {
       responseData = {
-        message: meta
+        message: meta,
         // "This video is from other",
         // title: meta.title || "No title found",
         // videoUrl: meta.url || "No video URL found",
