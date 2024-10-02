@@ -11,43 +11,18 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
-  res.send("This is fetchData Api form link change the path");
+  res.send("This is the root endpoint. Use /fetchData?url=YOUR_URL to fetch Open Graph data.");
 });
-
-async function fetchOpenGraphData(url) {
-  try {
-    const { data } = await axios.get(url);
-    const $ = cheerio.load(data);
-    const ogData = {};
-
-    $("meta").each((i, element) => {
-      const property = $(element).attr("property");
-      const content = $(element).attr("content");
-      if (property && property.startsWith("og:")) {
-        ogData[property] = content || "";
-      }
-    });
-
-    return ogData;
-  } catch (error) {
-    console.error("Error fetching Open Graph data:", error.message);
-    return null;
-  }
-}
 
 app.get("/fetchData", async (req, res) => {
   const url = req.query.url;
   console.log("req.query :>> ", req.query);
 
-  // const ogData = await fetchOpenGraphData(url);
-  // console.log(ogData);
-  // Validate URL input
   if (!url || typeof url !== "string") {
     return res.status(400).json({ error: "A valid URL is required" });
   }
 
   try {
-    // Use the open-graph package to fetch metadata
     og(url, function (err, meta) {
       if (err) {
         console.error("Error fetching Open Graph data:", err);
@@ -56,7 +31,6 @@ app.get("/fetchData", async (req, res) => {
           .json({ error: "Failed to fetch Open Graph data" });
       }
 
-      // Check if metadata was retrieved
       if (!meta) {
         return res
           .status(404)
@@ -64,7 +38,6 @@ app.get("/fetchData", async (req, res) => {
       }
 
       const siteName = meta.site_name || "";
-      console.log("meta :>> ", meta);
       let responseData = {};
 
       if (siteName.includes("YouTube")) {
@@ -78,28 +51,24 @@ app.get("/fetchData", async (req, res) => {
           message: "This video is from Instagram",
           title: meta.title || "No title found",
           videoUrl: meta.url || "No video URL found",
-          // likes: meta.site_name || "Likes information not available",
         };
       } else if (siteName.includes("Facebook")) {
         responseData = {
           message: "This video is from Facebook",
           title: meta.title || "No title found",
           videoUrl: meta.video.url || "No video URL found",
-          // likes: meta.likes || "Likes information not available",
         };
       } else if (siteName.includes("TikTok")) {
         responseData = {
           message: "This video is from TikTok",
           title: meta.title || "No title found",
           videoUrl: meta.video.url || "No video URL found",
-          // likes: meta.likes || "Likes information not available",
         };
       } else if (siteName.includes("Snapchat")) {
         responseData = {
           message: "This video is from Snapchat",
           title: meta.title || "No title found",
           videoUrl: meta.url || "No video URL found",
-          // likes: meta.likes || "Likes information not available",
         };
       } else if (siteName.includes("")) {
         responseData = {
@@ -114,7 +83,6 @@ app.get("/fetchData", async (req, res) => {
         });
       }
 
-      // Return the response data
       res.json(responseData);
     });
   } catch (error) {
