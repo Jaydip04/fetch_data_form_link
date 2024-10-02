@@ -56,7 +56,7 @@ app.get("/fetchData", async (req, res) => {
         responseData = {
           message: "This video is from Facebook",
           title: meta.title || "No title found",
-          videoUrl: meta.video.url || "No video URL found",
+          videoUrl: meta.url || "No video URL found",
         };
       } else if (siteName.includes("TikTok")) {
         responseData = {
